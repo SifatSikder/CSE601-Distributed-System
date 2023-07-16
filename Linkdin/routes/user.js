@@ -92,15 +92,15 @@ router.get("/minio", async (req, res) => {
 
     var minioClient = new Minio.Client({
         endPoint: process.env.ENDPOINT,
-        port: process.env.PORT,
-        useSSL: process.env.USESSL,
+        port: 9000,
+        useSSL: false,
         accessKey: process.env.ACCESSKEY,
-        secretKey: process.env.SECRETKEY
+        secretKey: process.env.MINIO_SECRET_KEY
     });
     var bucketName = process.env.BUCKETNAME
     var region = process.env.REGION
 
-    var filePath = '/home/sifat/3-2/Distributed System/CSE601-Distributed-System/Authentication System (copy)/app.js'
+    var filePath = '/home/sifat/3-2/Distributed System/CSE601-Distributed-System/Linkdin/app.js'
 
 
     // File that needs to be uploaded.
