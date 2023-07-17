@@ -87,9 +87,11 @@ router.get("/dashboard", authenticateToken, async (req, res) => {
 
 });
 
-router.get("/minio", async (req, res) => {
+router.post("/minio", async (req, res) => {
 
 
+    console.log(req);
+    console.log(req.body);
     var minioClient = new Minio.Client({
         endPoint: process.env.ENDPOINT,
         port: 9000,
@@ -99,6 +101,7 @@ router.get("/minio", async (req, res) => {
     });
     var bucketName = process.env.BUCKETNAME
     var region = process.env.REGION
+
 
     var filePath = '/home/sifat/3-2/Distributed System/CSE601-Distributed-System/Linkdin/app.js'
 
@@ -112,8 +115,6 @@ router.get("/minio", async (req, res) => {
     });
 
     console.log("File data submitted successfully: ", submitFileDataResult);
-
-
 });
 
 module.exports = router;
