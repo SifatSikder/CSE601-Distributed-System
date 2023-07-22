@@ -3,15 +3,19 @@ const router = express.Router();
 const jwt = require('jsonwebtoken')
 const Minio = require('minio')
 const fs = require('fs');
+const multer = require('multer');
 const User = require("../models/userModel");
+const Post = require("../models/postModel");
 require('dotenv').config()
 
 router.post("/register", async (req, res) => {
 
+    console.log(req.body);
+
 
     //Email and password is necessary to register    
     if ((!req.body.email) || (!req.body.password)) {
-        return res.json({ success: false, msg: 'Enter all fields' })
+        return res.json({ success: false, message: 'Enter all fields' })
     }
     else {
         const user = await User.findOne({ email: req.body.email });
@@ -23,10 +27,10 @@ router.post("/register", async (req, res) => {
             });
             newUser.save((err, newUser) => {
                 if (err) {
-                    return res.json({ success: false, msg: 'User Registration Unsuccessful' })
+                    return res.json({ success: false, message: 'User Registration Unsuccessful' })
                 }
                 else {
-                    return res.json({ success: true, msg: 'User Registration Successful' })
+                    return res.json({ success: true, message: 'User Registration Successful' })
                 }
             })
         }
@@ -38,7 +42,7 @@ router.post("/login", async (req, res) => {
 
     const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        return res.status(403).json({ success: false, msg: 'Authentication Failed, User not found' })
+        return res.status(403).json({ success: false, message: 'Authentication Failed, User not found' })
     }
     else {
         user.comparePassword(req.body.password, function (err, isMatch) {
@@ -47,10 +51,10 @@ router.post("/login", async (req, res) => {
                 const userInfo = { id: user._id, email: user.email, password: user.password };
                 console.log(userInfo);
                 var token = jwt.sign(userInfo, process.env.SECRET_KEY)
-                return res.json({ success: true, token: token })
+                return res.json({ success: true, message: token })
             }
             else {
-                return res.status(403).json({ success: false, msg: 'Authentication failed, wrong password' })
+                return res.status(403).json({ success: false, message: 'Authentication failed, wrong password' })
             }
         })
     }
@@ -58,19 +62,24 @@ router.post("/login", async (req, res) => {
 
 function authenticateToken(req, res, next) {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+
         var token = req.headers.authorization.split(' ')[1];
-        if (token == null) {
-            return res.status(403).json({ success: false, msg: 'No Token Provided' });
+
+        if (token == 'null') {
+            return res.json({ success: false, message: 'No Token Provided' });
         }
         jwt.verify(token, process.env.SECRET_KEY, (err, userInfo) => {
             if (err) {
-                return res.status(403).json({ success: false, msg: 'Invalid Token' });
+                return res.status(403).json({ success: false, message: 'Invalid Token' });
             }
             else {
                 req.user = userInfo;
                 next();
             }
         })
+    }
+    else {
+        return res.json({ success: false, message: 'Access denied' });
     }
 
 }
@@ -80,41 +89,97 @@ function authenticateToken(req, res, next) {
 router.get("/dashboard", authenticateToken, async (req, res) => {
 
     var user = await User.findById(req.user.id);
-    if (user == null) {
+    if (user == null || user == 'null') {
         return res.json({ success: false, message: 'Invalid Credentials' });
     }
-    return res.json({ success: true, user: user });
+    //fetching posts
+    var postList = await Post.find({});
+    var filteredpostList = [];
+    for (let index = 0; index < postList.length; index++) {
+        if (user._id != postList[index].userID) {
+            filteredpostList.push(postList[index]);
+        }
+
+    }
+    return res.json({ success: true, message: 'Welcome to dashboard', user: user, postList: filteredpostList });
 
 });
 
-router.post("/minio", async (req, res) => {
 
 
-    console.log(req);
-    console.log(req.body);
-    var minioClient = new Minio.Client({
-        endPoint: process.env.ENDPOINT,
-        port: 9000,
-        useSSL: false,
-        accessKey: process.env.ACCESSKEY,
-        secretKey: process.env.MINIO_SECRET_KEY
-    });
-    var bucketName = process.env.BUCKETNAME
-    var region = process.env.REGION
-
-
-    var filePath = '/home/sifat/3-2/Distributed System/CSE601-Distributed-System/Linkdin/app.js'
-
-
-    // File that needs to be uploaded.
-    const objectName = "app.js";
-    const fileData = fs.readFileSync(filePath);
-    const submitFileDataResult = await minioClient.putObject(bucketName, objectName, fileData).catch((e) => {
-        console.log("Error while creating object from file data: ", e);
-        throw e;
-    });
-
-    console.log("File data submitted successfully: ", submitFileDataResult);
+// File upload settings and multer configuration  
+const PATH = './imageStore';
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, PATH);
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
 });
+const upload = multer({ storage: storage })
+
+
+//Minio configuration
+var minioClient = new Minio.Client({
+    endPoint: process.env.ENDPOINT,
+    port: 9000,
+    useSSL: false,
+    accessKey: process.env.ACCESSKEY,
+    secretKey: process.env.MINIO_SECRET_KEY
+});
+var bucketName = process.env.BUCKETNAME
+var region = process.env.REGION
+
+
+
+router.post('/:userID/upload-post', upload.single('postImage'), async (req, res) => {
+
+    const file = req.file;
+    const postText = req.body.postText;
+    var user = await User.findById(req.params.userID);
+
+    //no file no text
+    if (!file && postText == '') {
+        return res.json({ success: false, message: 'Write something to share' });
+    }
+    //only text
+    else if (!file && postText != '') {
+
+        const post = new Post({
+            userID: user._id,
+            postText: postText,
+        });
+        post.save();
+        return res.json({ success: true, message: 'Post Shared' });
+    }
+
+    if (file) {
+        const fileData = fs.readFileSync(file.path);
+        const objectName = file.filename;
+        const metadata = { 'Content-type': 'image', };
+        await minioClient.putObject(bucketName, objectName, fileData, metadata);
+
+        const postImageUrl = `http://localhost:9000/${bucketName}/${objectName}`
+
+
+        if (postText == '') {
+            const post = new Post({
+                userID: user._id,
+                postImageUrl: postImageUrl,
+            });
+            post.save();
+        }
+        else {
+            const post = new Post({
+                userID: user._id,
+                postImageUrl: postImageUrl,
+                postText: postText,
+            });
+            post.save();
+        }
+        return res.json({ success: true, message: 'Post Shared' });
+    }
+})
 
 module.exports = router;
