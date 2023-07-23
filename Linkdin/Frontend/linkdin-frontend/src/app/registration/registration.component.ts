@@ -17,6 +17,8 @@ export class RegistrationComponent {
   onSubmit() {
 
 
+    console.log(this.user);
+
     this.http.post<any>('http://localhost:8000/user/register', this.user).subscribe(res => {
       if (res.success) {
         console.log(res.message);
