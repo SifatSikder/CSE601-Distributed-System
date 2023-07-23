@@ -85,8 +85,6 @@ function authenticateToken(req, res, next) {
 
 }
 
-
-
 router.get("/dashboard", authenticateToken, async (req, res) => {
 
     var user = await User.findById(req.user.id);
@@ -105,8 +103,6 @@ router.get("/dashboard", authenticateToken, async (req, res) => {
     return res.json({ success: true, message: 'Welcome to dashboard', user: user, postList: filteredpostList });
 
 });
-
-
 
 // File upload settings and multer configuration  
 const PATH = './imageStore';
@@ -131,7 +127,6 @@ var minioClient = new Minio.Client({
 });
 var bucketName = process.env.BUCKETNAME
 var region = process.env.REGION
-
 
 
 router.post('/:userID/upload-post', upload.single('postImage'), async (req, res) => {

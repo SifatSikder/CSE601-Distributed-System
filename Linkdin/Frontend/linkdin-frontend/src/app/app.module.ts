@@ -9,6 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { PostComponent } from './post/post.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotifierComponent } from './notifier/notifier.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -17,15 +21,20 @@ import { PostComponent } from './post/post.component';
     DashboardComponent,
     RegistrationComponent,
     LoginComponent,
-    PostComponent
+    PostComponent,
+    NotifierComponent,
+    HeaderComponent,
+
+
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-
-
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({})
   ],
   providers: [],
   bootstrap: [AppComponent]
