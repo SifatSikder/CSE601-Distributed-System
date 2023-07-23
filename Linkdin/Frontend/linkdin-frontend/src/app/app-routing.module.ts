@@ -5,6 +5,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { NotifierComponent } from './notifier/notifier.component';
 import { HeaderComponent } from './header/header.component';
+import { SinglePostComponent } from './single-post/single-post.component';
 
 const routes: Routes = [
   { path: '', component: RegistrationComponent },
@@ -12,7 +13,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'notifier', component: NotifierComponent },
   { path: 'header', component: HeaderComponent },
-
+  { path: 'post', component: SinglePostComponent },
 ];
 
 @NgModule({

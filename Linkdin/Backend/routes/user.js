@@ -6,6 +6,7 @@ const fs = require('fs');
 const multer = require('multer');
 const User = require("../models/userModel");
 const Post = require("../models/postModel");
+const Notification = require("../models/notificationModel");
 require('dotenv').config()
 
 router.post("/register", async (req, res) => {
@@ -87,20 +88,59 @@ function authenticateToken(req, res, next) {
 
 router.get("/dashboard", authenticateToken, async (req, res) => {
 
-    var user = await User.findById(req.user.id);
-    if (user == null || user == 'null') {
-        return res.json({ success: false, message: 'Invalid Credentials' });
-    }
     //fetching posts
-    var postList = await Post.find({});
-    var filteredpostList = [];
-    for (let index = 0; index < postList.length; index++) {
-        if (user._id != postList[index].userID) {
-            filteredpostList.push(postList[index]);
-        }
+    var posts = await Post.find({});
 
-    }
-    return res.json({ success: true, message: 'Welcome to dashboard', user: user, postList: filteredpostList });
+    //filtering post(Self posts will not be shown)
+    posts = posts.filter(post => post.userID != req.user.id)
+
+
+    //the above posts array contain postID,postText,postImageUrl
+    //but we want an array where the objects will store postID,postText,postImageUrl,postOwnerName,postOwnerEmail
+    var postList = [];
+    posts.forEach(async post => {
+
+        var postObject = {};
+        var postOwner = await User.findById(post.userID);
+        postObject['postText'] = post.postText;
+        postObject['postImageUrl'] = post.postImageUrl;
+        postObject['postOwnerName'] = postOwner.username;
+        postObject['postOwnerEmail'] = postOwner.email;
+        postList.push(postObject);
+
+
+        //Post not seen by the user==New post (Need to send a notification)
+        if (post.viewers.find(element => element._id == req.user.id) == undefined) {
+
+            const notification = new Notification({
+                receiverID: req.user.id,
+                postOwnerName: postOwner.username,
+                postID: post._id,
+            });
+            notification.save();
+
+            //Once notification is send via the database the current user must be
+            //put into the viewers array
+            post.viewers.push(req.user.id);
+            post.save();
+        }
+    })
+
+
+
+    //fetching user information
+    var user = await User.findById(req.user.id);
+
+
+    //Filtering notification that should be access by the current user
+    var notifications = await Notification.find({});
+    notifications = notifications.filter(notification => notification.receiverID == req.user.id)
+
+    console.log(notifications);
+
+
+    //Sending Response
+    return res.json({ success: true, message: 'Welcome to dashboard', user: user, postList: postList, notifications: notifications });
 
 });
 
@@ -116,7 +156,6 @@ let storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage })
 
-
 //Minio configuration
 var minioClient = new Minio.Client({
     endPoint: process.env.ENDPOINT,
@@ -127,7 +166,6 @@ var minioClient = new Minio.Client({
 });
 var bucketName = process.env.BUCKETNAME
 var region = process.env.REGION
-
 
 router.post('/:userID/upload-post', upload.single('postImage'), async (req, res) => {
 
@@ -176,6 +214,23 @@ router.post('/:userID/upload-post', upload.single('postImage'), async (req, res)
         }
         return res.json({ success: true, message: 'Post Shared' });
     }
+})
+
+
+router.get('/:notificationID/post', async (req, res) => {
+    const notification = await Notification.findById(req.params.notificationID);
+    const post = await Post.findById(notification.postID);
+    var postObject = {};
+    var postOwner = await User.findById(post.userID);
+    postObject['postText'] = post.postText;
+    postObject['postImageUrl'] = post.postImageUrl;
+    postObject['postOwnerName'] = postOwner.username;
+    postObject['postOwnerEmail'] = postOwner.email;
+
+    console.log('hit khaise');
+
+    return res.json({ success: true, post: postObject });
+
 })
 
 module.exports = router;

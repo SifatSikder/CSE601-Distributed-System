@@ -27,13 +27,21 @@
             Notification
         </a>
 
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+
+        <div *ngFor="let notification of notifications" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">{{notification.postOwnerName}}</a>
         </div>
+
+
+
     </div>
 </nav>
+
+
+<div *ngFor="let notification of notifications">
+    <button type="submit" (click)="onNotificationClick(notification._id)">{{notification.postOwnerName}}
+        shared a post</button>
+</div>
 
 
 
@@ -105,8 +113,8 @@
                                 <img class="rounded-circle" width="45" [src]=picurl alt="">
                             </div> -->
                                 <div class="ml-2">
-                                    <div class="h5 m-0">@{{user.username}}</div>
-                                    <div class="h7 text-muted">{{user.email}}</div>
+                                    <div class="h5 m-0">@{{post.postOwnerName}}</div>
+                                    <div class="h7 text-muted">{{post.postOwnerEmail}}</div>
                                 </div>
                             </div>
 

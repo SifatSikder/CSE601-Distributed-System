@@ -13,6 +13,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotifierComponent } from './notifier/notifier.component';
 import { HeaderComponent } from './header/header.component';
+import { SinglePostComponent } from './single-post/single-post.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { HeaderComponent } from './header/header.component';
     PostComponent,
     NotifierComponent,
     HeaderComponent,
+    SinglePostComponent,
 
 
 
