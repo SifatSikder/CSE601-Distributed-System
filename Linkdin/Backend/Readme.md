@@ -20,3 +20,4 @@ sudo MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=password minio server ~/minio --c
 
 mc policy set download admin/linkdin-post-images
 http://localhost:9000/linkdin-post-images/1690053213331-Sifat.jpg
+

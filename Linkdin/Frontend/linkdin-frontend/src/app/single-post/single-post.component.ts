@@ -15,6 +15,8 @@ export class SinglePostComponent {
 
   ngOnInit() {
     // this.post = this.postConnector.showPost();
-    console.log(this.postConnector.showPost());
+    this.postConnector.showPost().subscribe((res: any) => {
+      this.post = res.post;
+    });
   }
 }

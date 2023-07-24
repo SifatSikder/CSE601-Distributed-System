@@ -1,4 +1,25 @@
-<p>Hi</p>
-<p>{{post.postText}}</p>
+<div class="container-fluid gedf-wrapper">
+    <div class="justify-content-center row">
+        <div class="col-md-6 gedf-main">
+            <div class="card gedf-card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
 
-<img [src]=post.postImageUrl alt="">
+                        <!-- postlist - post person info -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="ml-2">
+                                <div class="h5 m-0">@{{post.postOwnerName}}</div>
+                                <div class="h7 text-muted">{{post.postOwnerEmail}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{post.postText}}</p>
+                    <img class="card-img-bottom" [src]=post.postImageUrl alt="Card image cap">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

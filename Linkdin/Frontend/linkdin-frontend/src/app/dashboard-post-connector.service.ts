@@ -22,10 +22,7 @@ export class DashboardPostConnectorService {
 
   showPost(): any {
     console.log(this.notificationID);
-    return this.notificationID;
-    // this.http.get<any>(`http://localhost:8000/user/${this.notificationID}/post`).subscribe(res => {
-    //   this.post = res.post;
-    //   return this.post;
-    // });
+    return this.http.get<any>(`http://localhost:8000/user/${this.notificationID}/post`)
+
   }
 }

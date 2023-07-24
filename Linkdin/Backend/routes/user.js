@@ -233,4 +233,23 @@ router.get('/:notificationID/post', async (req, res) => {
 
 })
 
+
+const mongodb = require('mongodb');
+
+async function notificationCleaner() {
+
+    const client = new mongodb.MongoClient(process.env.DATABASE_URL);
+    const database = client.db(process.env.DATABASE_NAME);
+    const notifications = database.collection("Notifications");
+    console.log(await notifications.findOne({ _id: "64bec3641408fe1bcccbe536" }));
+
+    const result = await notifications.deleteMany({});
+    // console.log("Deleted " + result.deletedCount + " documents");
+
+
+}
+
+
+setInterval(notificationCleaner, 1500);
+
 module.exports = router;
