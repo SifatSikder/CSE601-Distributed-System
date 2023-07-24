@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DashboardPostConnectorService } from '../dashboard-post-connector.service';
+import { Post } from '../post';
 
 @Component({
   selector: 'app-single-post',
@@ -7,4 +9,12 @@ import { Component } from '@angular/core';
 })
 export class SinglePostComponent {
 
+  constructor(public postConnector: DashboardPostConnectorService) { }
+
+  post: Post = new Post('', '', '', '');
+
+  ngOnInit() {
+    // this.post = this.postConnector.showPost();
+    console.log(this.postConnector.showPost());
+  }
 }

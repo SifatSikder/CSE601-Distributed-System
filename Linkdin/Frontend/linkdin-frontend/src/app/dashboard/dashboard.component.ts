@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { Post } from '../post';
 import { Notification } from '../notification';
+import { DashboardPostConnectorService } from '../dashboard-post-connector.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,7 @@ import { Notification } from '../notification';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, public postConnector: DashboardPostConnectorService) { }
 
   post: Post = new Post('', '');
   res: any;
@@ -59,17 +60,10 @@ export class DashboardComponent implements OnInit {
   }
 
   onNotificationClick(notificationID: string) {
-    console.log(notificationID);
+    // this.postConnector.getPost(notificationID);
+    this.postConnector.storeNotificationID(notificationID);
     this.router.navigate(['/post'])
-
-    this.http.get<any>(`http://localhost:8000/user/${notificationID}/post`).subscribe(res => {
-      console.log(res);
-    });
   }
-
-
-
-
 
 
 
