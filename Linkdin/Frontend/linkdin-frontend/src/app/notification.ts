@@ -6,5 +6,6 @@ export class Notification {
         public postOwnerName: string = '',
         public postID: string = '',
         public status: string = '',
+        public expiredStatus: string = '',
     ) { }
 }

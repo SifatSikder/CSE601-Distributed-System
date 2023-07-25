@@ -12,9 +12,6 @@ export class DashboardPostConnectorService {
   post: Post = new Post('', '');
   notificationID: any;
 
-  // getPost(notificationID: string) {
-
-  // }
 
   storeNotificationID(notificationID: string) {
     this.notificationID = notificationID;
@@ -23,6 +20,5 @@ export class DashboardPostConnectorService {
   showPost(): any {
     console.log(this.notificationID);
     return this.http.get<any>(`http://localhost:8000/user/${this.notificationID}/post`)
-
   }
 }

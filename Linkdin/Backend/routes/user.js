@@ -133,7 +133,8 @@ router.get("/dashboard", authenticateToken, async (req, res) => {
 
 
     //Filtering notification that should be access by the current user
-    var notifications = await Notification.find({});
+    var notifications = await Notification.find({ expiredStatus: "alive" });
+    console.log(notifications);
     notifications = notifications.filter(notification => notification.receiverID == req.user.id)
 
     console.log(notifications);
@@ -238,18 +239,14 @@ const mongodb = require('mongodb');
 
 async function notificationCleaner() {
 
-    const client = new mongodb.MongoClient(process.env.DATABASE_URL);
-    const database = client.db(process.env.DATABASE_NAME);
-    const notifications = database.collection("Notifications");
-    console.log(await notifications.findOne({ _id: "64bec3641408fe1bcccbe536" }));
-
-    const result = await notifications.deleteMany({});
-    // console.log("Deleted " + result.deletedCount + " documents");
-
-
+    var notifications = await Notification.find({});
+    notifications.forEach(notification => {
+        notification.expiredStatus = 'expired';
+        notification.save();
+    })
 }
 
 
-setInterval(notificationCleaner, 1500);
+setInterval(notificationCleaner, 50000);
 
 module.exports = router;

@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
 
     let headers = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`);
-
     this.http.get('http://localhost:8000/user/dashboard', { headers: headers }).subscribe(res => {
 
       this.res = res;
@@ -60,7 +59,6 @@ export class DashboardComponent implements OnInit {
   }
 
   onNotificationClick(notificationID: string) {
-    // this.postConnector.getPost(notificationID);
     this.postConnector.storeNotificationID(notificationID);
     this.router.navigate(['/post'])
   }

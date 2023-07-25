@@ -5,6 +5,7 @@ const notificationSchema = mongoose.Schema({
     postOwnerName: { type: String, },
     postID: { type: String, },
     status: { type: String, default: 'unread' },
+    expiredStatus: { type: String, default: 'alive' },
 })
 
 module.exports = mongoose.model('Notification', notificationSchema);
