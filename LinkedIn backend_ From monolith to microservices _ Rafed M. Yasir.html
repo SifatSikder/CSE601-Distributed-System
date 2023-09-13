@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/ -->
+<html lang="en-us"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<meta name="generator" content="Wowchemy 5.3.0 for Hugo">
+<meta name="author" content="Rafed Muhammad Yasir">
+<meta name="description" content="Goal Your task is to build a monolithic web based system. Then, break down the system into microservices following the microservice architecture. To acheive this follow the steps below.
+Step 1: Build a server and a client You will create a basic version of LinkedIn.">
+<link rel="alternate" hreflang="en-us" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<meta name="theme-color" content="#1565c0">
+<style class="anchorjs"></style><link rel="stylesheet" href="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/academicons.min.css" integrity="sha512-W4yqoT1+8NLkinBLBZko+dFB2ZbHsYLDdr50VElllRcNt2Q4/GSs6u71UHKxB7S6JEMCp5Ve4xjh3eGQl/HRvg==" crossorigin="anonymous" media="all" onload="this.media=&#39;all&#39;">
+<link rel="stylesheet" href="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/all.min.css" integrity="sha256-FMvZuGapsJLjouA6k7Eo2lusoAX9i0ShlWFG6qt7SLc=" crossorigin="anonymous" media="all" onload="this.media=&#39;all&#39;">
+<link rel="stylesheet" href="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/github.min.css" crossorigin="anonymous" title="hl-light" media="all" onload="this.media=&#39;all&#39;">
+<link rel="stylesheet" href="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media=&#39;all&#39;" disabled="">
+<link rel="preload" as="style" href="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/css2">
+<link rel="stylesheet" href="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/css2" media="all" onload="this.media=&#39;all&#39;">
+<link rel="stylesheet" href="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/wowchemy.54ac806ed944b07e3826c0bdb5ecf111.css">
+<script async="" src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/js"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}function trackOutboundLink(a,b){gtag('event','click',{event_category:'outbound',event_label:a,transport_type:'beacon',event_callback:function(){b!=='_blank'&&(document.location=a)}}),console.debug("Outbound link clicked: "+a)}function onClickCallback(a){if(a.target.tagName!=='A'||a.target.host===window.location.host)return;trackOutboundLink(a.target,a.target.getAttribute('target'))}gtag('js',new Date),gtag('config','G-MRT1PJZPT5',{}),gtag('set',{cookie_flags:'SameSite=None;Secure'}),document.addEventListener('click',onClickCallback,!1)</script>
+<link rel="manifest" href="https://rafed.github.io/manifest.webmanifest">
+<link rel="icon" type="image/png" href="https://rafed.github.io/media/icon_hu21e3d06fd85657997c5a756b8676c06c_23682_32x32_fill_lanczos_center_3.png">
+<link rel="apple-touch-icon" type="image/png" href="https://rafed.github.io/media/icon_hu21e3d06fd85657997c5a756b8676c06c_23682_180x180_fill_lanczos_center_3.png">
+<link rel="canonical" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/">
+<meta property="twitter:card" content="summary">
+<meta property="og:site_name" content="Rafed M. Yasir">
+<meta property="og:url" content="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/">
+<meta property="og:title" content="LinkedIn backend: From monolith to microservices | Rafed M. Yasir">
+<meta property="og:description" content="Goal Your task is to build a monolithic web based system. Then, break down the system into microservices following the microservice architecture. To acheive this follow the steps below.
+Step 1: Build a server and a client You will create a basic version of LinkedIn."><meta property="og:image" content="https://rafed.github.io/media/icon_hu21e3d06fd85657997c5a756b8676c06c_23682_512x512_fill_lanczos_center_3.png">
+<meta property="twitter:image" content="https://rafed.github.io/media/icon_hu21e3d06fd85657997c5a756b8676c06c_23682_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
+<meta property="article:published_time" content="2023-07-08T00:00:00+00:00">
+<meta property="article:modified_time" content="2023-07-08T00:00:00+00:00">
+<title>LinkedIn backend: From monolith to microservices | Rafed M. Yasir</title>
+<style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style><link rel="prefetch" href="https://rafed.github.io/achievements"></head>
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper" data-wc-page-id="91fadf6eb3f55338492b6a6b7aad1aa8">
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/wowchemy-init.min.8988fb2a4bba758785868cfcb5244555.js"></script>
+<div class="page-header">
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+<div class="container-xl">
+<div class="d-none d-lg-inline-flex">
+<a class="navbar-brand" href="https://rafed.github.io/">Rafed M. Yasir</a>
+</div>
+<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+<span><i class="fas fa-bars"></i></span>
+</button>
+<div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+<a class="navbar-brand" href="https://rafed.github.io/">Rafed M. Yasir</a>
+</div>
+<div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+<ul class="navbar-nav d-md-inline-flex">
+<li class="nav-item">
+<a class="nav-link" href="https://rafed.github.io/experience"><span>Experience</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://rafed.github.io/achievements"><span>Achievements</span></a>
+</li>
+<li class="nav-item dropdown">
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Skills</span><span class="caret"></span>
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="https://rafed.github.io/skills/devops"><span>🔨 DevOps</span></a>
+<a class="dropdown-item" href="https://rafed.github.io/skills/security"><span>🔒 Security</span></a>
+<a class="dropdown-item" href="https://rafed.github.io/skills/development"><span>🖥 Backend/Frontend</span></a>
+<a class="dropdown-item" href="https://rafed.github.io/skills/ml"><span>🧠 ML/Data science</span></a>
+<a class="dropdown-item" href="https://rafed.github.io/projects"><span>📚 Projects</span></a>
+</div>
+</li>
+<li class="nav-item dropdown">
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Academics</span><span class="caret"></span>
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="https://rafed.github.io/courses/"><span>📖 Courses</span></a>
+<a class="dropdown-item" href="https://rafed.github.io/publication"><span>🖊 Publications</span></a>
+</div>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://rafed.github.io/event"><span>Events</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://rafed.github.io/#recent-news"><span>News</span></a>
+</li>
+<li class="nav-item dropdown">
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Blogs</span><span class="caret"></span>
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="https://rafed.github.io/devra/"><span>💻 DevRa - Tech Blog</span></a>
+<a class="dropdown-item" href="https://rafed.github.io/blog/"><span>👤 Personal Blog</span></a>
+</div>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://rafed.github.io/other"><span>Others</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://rafed.github.io/#contact"><span>Contact</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="https://www.buymeacoffee.com/rafed" target="_blank" rel="noopener"><span>☕</span></a>
+</li>
+</ul>
+</div>
+<ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+<li class="nav-item dropdown theme-dropdown">
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+<i class="fas fa-moon" aria-hidden="true"></i>
+</a>
+<div class="dropdown-menu">
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" class="dropdown-item js-set-theme-light">
+<span>Light</span>
+</a>
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" class="dropdown-item js-set-theme-dark">
+<span>Dark</span>
+</a>
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" class="dropdown-item js-set-theme-auto dropdown-item-active">
+<span>Automatic</span>
+</a>
+</div>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+<div class="page-body">
+<div class="container-fluid docs">
+<div class="row flex-xl-nowrap">
+<div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+<form class="docs-search d-flex align-items-center">
+<button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+<div class="d-flex">
+<span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+Lab
+</span>
+<span><i class="fas fa-chevron-down"></i></span>
+</div>
+</button>
+</form>
+<nav class="collapse docs-links" id="docs-nav">
+<ul class="nav docs-sidenav">
+<li><a href="https://rafed.github.io/courses/"><i class="fas fa-arrow-left pr-1"></i>Courses</a></li>
+</ul>
+<div class="docs-toc-item">
+<a class="docs-toc-link" href="https://rafed.github.io/courses/distributed-systems/">Distributed Systems</a>
+<ul class="nav docs-sidenav">
+<div class="docs-toc-item">
+<a class="docs-toc-link" href="https://rafed.github.io/courses/distributed-systems/theory/">Theory</a>
+<ul class="nav docs-sidenav">
+<li><a href="https://rafed.github.io/courses/distributed-systems/theory/01-introduction/">Introduction to Distributed systems</a></li>
+<li><a href="https://rafed.github.io/courses/distributed-systems/theory/010-intro-microservices/">Introduction to Microservices</a></li>
+<li><a href="https://rafed.github.io/courses/distributed-systems/theory/020-sys-design-golden-rules/">System Design Golden Rules</a></li>
+</ul>
+</div>
+<div class="docs-toc-item">
+<a class="docs-toc-link" href="https://rafed.github.io/courses/distributed-systems/lab/">Lab</a>
+<ul class="nav docs-sidenav">
+<li><a href="https://rafed.github.io/courses/distributed-systems/lab/containerization/">Containerizing an App</a></li>
+<li><a href="https://rafed.github.io/courses/distributed-systems/lab/pipeline/">Creating a pipeline</a></li>
+<li><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-ride-share/">Ride sharing backend: From monolith to microservices</a></li>
+<li><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-facebook/">Facebook backend: From monolith to microservices</a></li>
+<li class="active"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/">LinkedIn backend: From monolith to microservices</a></li>
+</ul>
+</div>
+</ul>
+</div>
+</nav>
+</div>
+<div class="d-none d-xl-block col-xl-2 docs-toc">
+<ul class="nav toc-top">
+<li><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" id="back_to_top" class="docs-toc-title">Contents</a></li>
+</ul>
+<nav id="TableOfContents" class="nav flex-column">
+<ul>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#goal" class="nav-link">Goal</a></li>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#step-1-build-a-server-and-a-client" class="nav-link">Step 1: Build a server and a client</a>
+<ul>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#architecture" class="nav-link">Architecture</a></li>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#requirements" class="nav-link">Requirements</a></li>
+</ul>
+</li>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#step-2-decompose-to-microservices-containerize-and-orchestrate" class="nav-link">Step 2: Decompose to microservices, containerize and orchestrate</a>
+<ul>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#requirements-1" class="nav-link active">Requirements</a></li>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#architecture-1" class="nav-link">Architecture</a></li>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#what-to-do" class="nav-link">What to do?</a></li>
+<li class="nav-item"><a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#suggestionslearning-materials" class="nav-link">Suggestions/Learning Materials</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+<main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+<article class="article">
+<div class="docs-article-container">
+<h1>LinkedIn backend: From monolith to microservices</h1>
+<div class="article-style">
+<h2 id="goal">Goal<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#goal" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+<p>Your task is to build a monolithic web based system. Then, break down the system into microservices following the microservice architecture. To acheive this follow the steps below.</p>
+<h2 id="step-1-build-a-server-and-a-client">Step 1: Build a server and a client<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#step-1-build-a-server-and-a-client" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+<p>You will create a basic version of <strong>LinkedIn</strong>. The app itself should not be complex as we are here to build a distributed system and not a full featured social media app.</p>
+<h3 id="architecture">Architecture<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#architecture" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<div class="mermaid"><svg id="mermaid-0" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="287.1518859863281" style="max-width: 247.421875px;" viewBox="0 0 247.421875 287.1518859863281"><style>#mermaid-0{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#333;}#mermaid-0 .error-icon{fill:#552222;}#mermaid-0 .error-text{fill:#552222;stroke:#552222;}#mermaid-0 .edge-thickness-normal{stroke-width:2px;}#mermaid-0 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-0 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-0 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-0 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-0 .marker{fill:#333333;}#mermaid-0 .marker.cross{stroke:#333333;}#mermaid-0 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-0 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#333;}#mermaid-0 .label text{fill:#333;}#mermaid-0 .node rect,#mermaid-0 .node circle,#mermaid-0 .node ellipse,#mermaid-0 .node polygon,#mermaid-0 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#mermaid-0 .node .label{text-align:center;}#mermaid-0 .node.clickable{cursor:pointer;}#mermaid-0 .arrowheadPath{fill:#333333;}#mermaid-0 .edgePath .path{stroke:#333333;stroke-width:1.5px;}#mermaid-0 .flowchart-link{stroke:#333333;fill:none;}#mermaid-0 .edgeLabel{background-color:#e8e8e8;text-align:center;}#mermaid-0 .edgeLabel rect{opacity:0.5;background-color:#e8e8e8;fill:#e8e8e8;}#mermaid-0 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#mermaid-0 .cluster text{fill:#333;}#mermaid-0 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(80,100%,96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-0:root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}#mermaid-0 flowchart{fill:apa;}</style><g><g class="output"><g class="clusters"></g><g class="edgePaths"><g class="edgePath LS-CLIENT LE-SERVER" id="L-CLIENT-SERVER" style="opacity: 1;"><path class="path" d="M122.60546875,54.390625L122.60546875,79.390625L122.60546875,104.390625" marker-end="url(#arrowhead13)" style="fill:none"></path><defs><marker id="arrowhead13" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-SERVER LE-DB" id="L-SERVER-DB" style="opacity: 1;"><path class="path" d="M89.04296875,150.57711650172118L52.25,175.78125L52.25,201.22675323486328" marker-end="url(#arrowhead14)" style="fill:none"></path><defs><marker id="arrowhead14" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-SERVER LE-OBJ_DB" id="L-SERVER-OBJ_DB" style="opacity: 1;"><path class="path" d="M156.16796875,150.57711650172118L192.9609375,175.78125L192.9609375,200.78125" marker-end="url(#arrowhead15)" style="fill:none"></path><defs><marker id="arrowhead15" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-CLIENT-SERVER" class="edgeLabel L-LS-CLIENT&#39; L-LE-SERVER"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-SERVER-DB" class="edgeLabel L-LS-SERVER&#39; L-LE-DB"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-SERVER-OBJ_DB" class="edgeLabel L-LS-SERVER&#39; L-LE-OBJ_DB"></span></div></foreignobject></g></g></g><g class="nodes"><g class="node default" id="flowchart-CLIENT-6" transform="translate(122.60546875,31.1953125)" style="opacity: 1;"><rect rx="0" ry="0" x="-30.453125" y="-23.1953125" width="60.90625" height="46.390625" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-20.453125,-13.1953125)"><foreignobject width="40.90625" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Client</div></foreignobject></g></g></g><g class="node default" id="flowchart-SERVER-7" transform="translate(122.60546875,127.5859375)" style="opacity: 1;"><rect rx="0" ry="0" x="-33.5625" y="-23.1953125" width="67.125" height="46.390625" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-23.5625,-13.1953125)"><foreignobject width="47.125" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Server</div></foreignobject></g></g></g><g class="node default" id="flowchart-DB-9" label-offset-y="10.362997658079626" transform="translate(52.25,239.9665641784668)" style="opacity: 1;"><path d="M 0,10.362997658079626 a 44.25,10.362997658079626 0,0,0 88.5 0 a 44.25,10.362997658079626 0,0,0 -88.5 0 l 0,56.75362265807963 a 44.25,10.362997658079626 0,0,0 88.5 0 l 0,-56.75362265807963" transform="translate(-44.25,-38.73980898711944)" class="label-container"></path><g class="label" transform="translate(0,0)"><g transform="translate(-34.25,-13.1953125)"><foreignobject width="68.5" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Database</div></foreignobject></g></g></g><g class="node default" id="flowchart-OBJ_DB-11" label-offset-y="10.659998565999857" transform="translate(192.9609375,239.9665641784668)" style="opacity: 1;"><path d="M 0,10.659998565999857 a 46.4609375,10.659998565999857 0,0,0 92.921875 0 a 46.4609375,10.659998565999857 0,0,0 -92.921875 0 l 0,57.05062356599986 a 46.4609375,10.659998565999857 0,0,0 92.921875 0 l 0,-57.05062356599986" transform="translate(-46.4609375,-39.185310348999785)" class="label-container"></path><g class="label" transform="translate(0,0)"><g transform="translate(-36.4609375,-13.1953125)"><foreignobject width="72.921875" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Object DB</div></foreignobject></g></g></g></g></g></g></svg></div>
+<h3 id="requirements">Requirements<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#requirements" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<h4 id="client-requirements">Client Requirements<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#client-requirements" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+<p>The client UI will have the following routes:</p>
+<ul>
+<li>Registration page</li>
+<li>Login page</li>
+<li>Home page: should show a vertical list of posts (texts/images)</li>
+<li>Notification page: should show notifications of recent posts
+<ul>
+<li>Clicking on the notification should show the post</li>
+</ul>
+</li>
+</ul>
+<h4 id="server-requirements">Server requirements<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#server-requirements" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+<h5 id="apis">APIS<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#apis" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+<ul>
+<li><strong>/register</strong> endpoint for creating new users
+<ul>
+<li>user registers with email and password</li>
+</ul>
+</li>
+<li><strong>/login</strong> endpoint for logging (with JWT)
+<ul>
+<li>user logs in with email and password</li>
+</ul>
+</li>
+<li><strong>/post</strong> endpoint for creating and retrieving posts
+<ul>
+<li>GET: Get latest posts of all users except logged in user</li>
+<li>POST: Create new posts for user</li>
+</ul>
+</li>
+<li><strong>/notification</strong> endpoint for creating and retrieving notifications
+<ul>
+<li>GET: Get notifications</li>
+<li>POST: Create notification against a post</li>
+</ul>
+</li>
+</ul>
+<h5 id="jobs">Jobs<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#jobs" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+<ul>
+<li>Notification cleaner: A job should periodically check for old notifications and delete them</li>
+</ul>
+<h5 id="system-assumptions">System assumptions<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#system-assumptions" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+<ul>
+<li>All users are friends/connected by default</li>
+<li>The system needs no other services (e.g. chat, comments, reacts)</li>
+</ul>
+<h4 id="other-instructions">Other instructions<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#other-instructions" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h4>
+<ul>
+<li>Images uploaded for posts should be stored in an object store database (MinIO)</li>
+<li>You may use any programming language. However, <strong>Node.js or Python or Go</strong> is recommended.</li>
+<li>Frameworks/libraries can be used. However, using frameworks (like express/flask/fastapi/gin) will make the assignment easier.</li>
+<li>Using a framework on the frontend can be useful (angular/vue/react).</li>
+<li>You can use any database. Mongo recommended.</li>
+<li>Don’t implement extra features. Because, distributing them in multiple instances could turn out to be a problem later.</li>
+</ul>
+<h2 id="step-2-decompose-to-microservices-containerize-and-orchestrate">Step 2: Decompose to microservices, containerize and orchestrate<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#step-2-decompose-to-microservices-containerize-and-orchestrate" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+<p>If you have completed step 1, congratulations! By now you have learned how to-</p>
+<ul>
+<li>make APIs and call them (from a frontend)</li>
+<li>integrate database with an application</li>
+<li>use an object store database</li>
+</ul>
+<p>If you have done all that, kudos! You are now ready to start building microservices (or more like breaking an app into microservices).</p>
+<h3 id="requirements-1">Requirements<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#requirements-1" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<p>Currently our application is a monolith. It’s time we convert it to a microservice applitcation.</p>
+<p>Let’s recap what modules we have in our backend system so far:</p>
+<ul>
+<li>User management module (Registration, Login)</li>
+<li>Posts module</li>
+<li>Notification module</li>
+</ul>
+<p>Currently these modules form a single monolith. We need to segregate them to the following services.</p>
+<ol>
+<li>User service
+<ul>
+<li>Registration</li>
+<li>Login</li>
+<li>Authentication</li>
+</ul>
+</li>
+<li>Posts service</li>
+<li>Notification service</li>
+</ol>
+<p>In addition, we also need to develop a sustainable system/environment where we can build/run the microservices easily.</p>
+<p>Our expected system architecture will be like the following.</p>
+<h3 id="architecture-1">Architecture<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#architecture-1" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<div class="mermaid"><svg id="mermaid-1" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="509.3022766113281" style="max-width: 563.4453125px;" viewBox="0 0 563.4453125 509.3022766113281"><style>#mermaid-1{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#333;}#mermaid-1 .error-icon{fill:#552222;}#mermaid-1 .error-text{fill:#552222;stroke:#552222;}#mermaid-1 .edge-thickness-normal{stroke-width:2px;}#mermaid-1 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1 .marker{fill:#333333;}#mermaid-1 .marker.cross{stroke:#333333;}#mermaid-1 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#333;}#mermaid-1 .label text{fill:#333;}#mermaid-1 .node rect,#mermaid-1 .node circle,#mermaid-1 .node ellipse,#mermaid-1 .node polygon,#mermaid-1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#mermaid-1 .node .label{text-align:center;}#mermaid-1 .node.clickable{cursor:pointer;}#mermaid-1 .arrowheadPath{fill:#333333;}#mermaid-1 .edgePath .path{stroke:#333333;stroke-width:1.5px;}#mermaid-1 .flowchart-link{stroke:#333333;fill:none;}#mermaid-1 .edgeLabel{background-color:#e8e8e8;text-align:center;}#mermaid-1 .edgeLabel rect{opacity:0.5;background-color:#e8e8e8;fill:#e8e8e8;}#mermaid-1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#mermaid-1 .cluster text{fill:#333;}#mermaid-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(80,100%,96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1:root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}#mermaid-1 flowchart{fill:apa;}</style><g><g class="output"><g class="clusters"></g><g class="edgePaths"><g class="edgePath LS-CLIENT LE-PROXY" id="L-CLIENT-PROXY" style="opacity: 1;"><path class="path" d="M206.25,54.390625L206.25,79.390625L206.25,104.390625" marker-end="url(#arrowhead45)" style="fill:none"></path><defs><marker id="arrowhead45" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-PROXY LE-USER" id="L-PROXY-USER" style="opacity: 1;"><path class="path" d="M127.41827332225644,150.78125L42.453125,175.78125L42.453125,223.9765625L42.453125,272.171875L55.225517626915995,313.1618766784668" marker-end="url(#arrowhead46)" style="fill:none"></path><defs><marker id="arrowhead46" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-PROXY LE-POST" id="L-PROXY-POST" style="opacity: 1;"><path class="path" d="M206.25,150.78125L206.25,175.78125L206.25,200.78125" marker-end="url(#arrowhead47)" style="fill:none"></path><defs><marker id="arrowhead47" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-PROXY LE-NOTIFICATION" id="L-PROXY-NOTIFICATION" style="opacity: 1;"><path class="path" d="M296.71875,143.6127507771444L478.3046875,175.78125L478.3046875,200.78125" marker-end="url(#arrowhead48)" style="fill:none"></path><defs><marker id="arrowhead48" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-USER LE-USER_DB" id="L-USER-USER_DB" style="opacity: 1;"><path class="path" d="M62.453125,359.5525016784668L62.453125,400.5425033569336L62.453125,425.5425033569336" marker-end="url(#arrowhead49)" style="fill:none"></path><defs><marker id="arrowhead49" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-POST LE-POST_DB" id="L-POST-POST_DB" style="opacity: 1;"><path class="path" d="M206.25,247.171875L206.25,272.171875L206.25,298.6750679016113" marker-end="url(#arrowhead50)" style="fill:none"></path><defs><marker id="arrowhead50" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-POST LE-OBJECT_DB" id="L-POST-OBJECT_DB" style="opacity: 1;"><path class="path" d="M259.8203125,242.9879677702353L342.0546875,272.171875L342.0546875,297.171875" marker-end="url(#arrowhead51)" style="fill:none"></path><defs><marker id="arrowhead51" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-POST LE-USER" id="L-POST-USER" style="opacity: 1;"><path class="path" d="M153.54448971166315,247.171875L96.73828125,272.171875L74.84310740499185,313.1618766784668" marker-end="url(#arrowhead52)" style="fill:none"></path><defs><marker id="arrowhead52" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-NOTIFICATION LE-NOTIFICATION_DB" id="L-NOTIFICATION-NOTIFICATION_DB" style="opacity: 1;"><path class="path" d="M478.3046875,247.171875L478.3046875,272.171875L478.3046875,298.5748825073242" marker-end="url(#arrowhead53)" style="fill:none"></path><defs><marker id="arrowhead53" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g><g class="edgePath LS-NOTIFICATION LE-USER" id="L-NOTIFICATION-USER" style="opacity: 1;"><path class="path" d="M401.1640625,234.48025992694124L124.3515625,272.171875L84.82200516286898,313.1618766784668" marker-end="url(#arrowhead54)" style="fill:none"></path><defs><marker id="arrowhead54" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker></defs></g></g><g class="edgeLabels"><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-CLIENT-PROXY" class="edgeLabel L-LS-CLIENT&#39; L-LE-PROXY"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-PROXY-USER" class="edgeLabel L-LS-PROXY&#39; L-LE-USER"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-PROXY-POST" class="edgeLabel L-LS-PROXY&#39; L-LE-POST"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-PROXY-NOTIFICATION" class="edgeLabel L-LS-PROXY&#39; L-LE-NOTIFICATION"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-USER-USER_DB" class="edgeLabel L-LS-USER&#39; L-LE-USER_DB"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-POST-POST_DB" class="edgeLabel L-LS-POST&#39; L-LE-POST_DB"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-POST-OBJECT_DB" class="edgeLabel L-LS-POST&#39; L-LE-OBJECT_DB"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-POST-USER" class="edgeLabel L-LS-POST&#39; L-LE-USER"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-NOTIFICATION-NOTIFICATION_DB" class="edgeLabel L-LS-NOTIFICATION&#39; L-LE-NOTIFICATION_DB"></span></div></foreignobject></g></g><g class="edgeLabel" transform="" style="opacity: 1;"><g transform="translate(0,0)" class="label"><rect rx="0" ry="0" width="0" height="0"></rect><foreignobject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;"><span id="L-L-NOTIFICATION-USER" class="edgeLabel L-LS-NOTIFICATION&#39; L-LE-USER"></span></div></foreignobject></g></g></g><g class="nodes"><g class="node default" id="flowchart-CLIENT-32" transform="translate(206.25,31.1953125)" style="opacity: 1;"><rect rx="0" ry="0" x="-30.453125" y="-23.1953125" width="60.90625" height="46.390625" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-20.453125,-13.1953125)"><foreignobject width="40.90625" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Client</div></foreignobject></g></g></g><g class="node default" id="flowchart-PROXY-33" transform="translate(206.25,127.5859375)" style="opacity: 1;"><rect rx="0" ry="0" x="-90.46875" y="-23.1953125" width="180.9375" height="46.390625" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-80.46875,-13.1953125)"><foreignobject width="160.9375" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Reverse Proxy (Nginx)</div></foreignobject></g></g></g><g class="node default" id="flowchart-USER-35" transform="translate(62.453125,336.3571891784668)" style="opacity: 1;"><rect rx="0" ry="0" x="-54.453125" y="-23.1953125" width="108.90625" height="46.390625" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-44.453125,-13.1953125)"><foreignobject width="88.90625" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">User service</div></foreignobject></g></g></g><g class="node default" id="flowchart-POST-37" transform="translate(206.25,223.9765625)" style="opacity: 1;"><rect rx="0" ry="0" x="-53.5703125" y="-23.1953125" width="107.140625" height="46.390625" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-43.5703125,-13.1953125)"><foreignobject width="87.140625" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Post service</div></foreignobject></g></g></g><g class="node default" id="flowchart-NOTIFICATION-39" transform="translate(478.3046875,223.9765625)" style="opacity: 1;"><rect rx="0" ry="0" x="-77.140625" y="-23.1953125" width="154.28125" height="46.390625" class="label-container"></rect><g class="label" transform="translate(0,0)"><g transform="translate(-67.140625,-13.1953125)"><foreignobject width="134.28125" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Notification service</div></foreignobject></g></g></g><g class="node default" id="flowchart-USER_DB-41" label-offset-y="9.789717849266102" transform="translate(62.453125,463.42238998413086)" style="opacity: 1;"><path d="M 0,9.789717849266102 a 40.2265625,9.789717849266102 0,0,0 80.453125 0 a 40.2265625,9.789717849266102 0,0,0 -80.453125 0 l 0,56.180342849266104 a 40.2265625,9.789717849266102 0,0,0 80.453125 0 l 0,-56.180342849266104" transform="translate(-40.2265625,-37.87988927389915)" class="label-container"></path><g class="label" transform="translate(0,0)"><g transform="translate(-30.2265625,-13.1953125)"><foreignobject width="60.453125" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">User DB</div></foreignobject></g></g></g><g class="node default" id="flowchart-POST_DB-43" label-offset-y="9.657870512427124" transform="translate(206.25,336.3571891784668)" style="opacity: 1;"><path d="M 0,9.657870512427124 a 39.34375,9.657870512427124 0,0,0 78.6875 0 a 39.34375,9.657870512427124 0,0,0 -78.6875 0 l 0,56.048495512427124 a 39.34375,9.657870512427124 0,0,0 78.6875 0 l 0,-56.048495512427124" transform="translate(-39.34375,-37.682118268640686)" class="label-container"></path><g class="label" transform="translate(0,0)"><g transform="translate(-29.34375,-13.1953125)"><foreignobject width="58.6875" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Post DB</div></foreignobject></g></g></g><g class="node default" id="flowchart-OBJECT_DB-45" label-offset-y="10.659998565999857" transform="translate(342.0546875,336.3571891784668)" style="opacity: 1;"><path d="M 0,10.659998565999857 a 46.4609375,10.659998565999857 0,0,0 92.921875 0 a 46.4609375,10.659998565999857 0,0,0 -92.921875 0 l 0,57.05062356599986 a 46.4609375,10.659998565999857 0,0,0 92.921875 0 l 0,-57.05062356599986" transform="translate(-46.4609375,-39.185310348999785)" class="label-container"></path><g class="label" transform="translate(0,0)"><g transform="translate(-36.4609375,-13.1953125)"><foreignobject width="72.921875" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Object DB</div></foreignobject></g></g></g><g class="node default" id="flowchart-NOTIFICATION_DB-49" label-offset-y="9.724662033147483" transform="translate(478.3046875,336.3571891784668)" style="opacity: 1;"><path d="M 0,9.724662033147483 a 39.7890625,9.724662033147483 0,0,0 79.578125 0 a 39.7890625,9.724662033147483 0,0,0 -79.578125 0 l 0,56.11528703314748 a 39.7890625,9.724662033147483 0,0,0 79.578125 0 l 0,-56.11528703314748" transform="translate(-39.7890625,-37.78230554972122)" class="label-container"></path><g class="label" transform="translate(0,0)"><g transform="translate(-29.7890625,-13.1953125)"><foreignobject width="59.578125" height="26.390625"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Notif DB</div></foreignobject></g></g></g></g></g></g></svg></div>
+<h3 id="what-to-do">What to do?<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#what-to-do" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<ol>
+<li>In your project folder, make sub projects. Each sub project will be a separate microservice.</li>
+<li>Decompose the monolith into microservices so that each microservice is in a sub-project.</li>
+<li>Containerize each service using Docker</li>
+<li>Orchestrate the services by writing a docker-compose file</li>
+<li>Make sure to have an nginx container so that ALL traffic is routed through nginx and delivered to the respective services</li>
+<li>Write additional code so that the services communicate among themselves and the business logic discussed in <em>step 1</em> is served.
+<ul>
+<li>You may need to check requests for <strong>authorization</strong> when a user hits <strong>post service</strong> and <strong>notification service</strong></li>
+</ul>
+</li>
+</ol>
+<h3 id="suggestionslearning-materials">Suggestions/Learning Materials<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#suggestionslearning-materials" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+<ol>
+<li>Take your time to do the assignment. Instead of seeing it as one large task, try completing it taking one step at a time.</li>
+<li>For writing nginx configurations Google is your friend. You can also follow their official docs at <a href="https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files/" target="_blank" rel="noopener">docs.nginx.com</a>.</li>
+<li>Easy tutorials on containerizing with Docker
+<ul>
+<li><a href="https://www.youtube.com/watch?v=Gjnup-PuquQ" target="_blank" rel="noopener">Docker in 100 seconds</a></li>
+<li><a href="https://www.youtube.com/watch?v=gAkwW2tuIqE" target="_blank" rel="noopener">Docker in 7 easy steps</a></li>
+<li><a href="https://www.youtube.com/watch?v=MVIcrmeV_6c" target="_blank" rel="noopener">Docker-compose tutorial</a></li>
+<li><a href="https://rafed.github.io/devra/posts/docker/useful-docker-commands/" target="_blank" rel="noopener">My personal docker cheatsheet</a></li>
+<li>And please, Google some stuff yourself</li>
+</ul>
+</li>
+<li>For inspiration, you can check out <a href="https://github.com/rafed/nginx-flask-docker" target="_blank" rel="noopener">this repo</a> for a demo web app that’s load balanced, containerized and orchestrated with docker.</li>
+</ol>
+<p>Good Luck!</p>
+</div>
+<div class="article-widget">
+<div class="post-nav">
+<div class="post-nav-item">
+<div class="meta-nav">Previous</div>
+<a href="https://rafed.github.io/courses/distributed-systems/lab/microservice-facebook/" rel="next">Facebook backend: From monolith to microservices</a>
+</div>
+</div>
+</div>
+</div>
+<div class="body-footer">
+<p>Last updated on Jul 8, 2023</p>
+</div>
+</article>
+<footer class="site-footer">
+<p class="powered-by">
+© 2023 Rafed Muhammad Yasir
+</p>
+<p class="powered-by">
+Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-modules" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+</p>
+</footer>
+</main>
+</div>
+</div>
+</div>
+<div class="page-footer">
+</div>
+<div id="modal" class="modal fade" role="dialog">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="cite">Cite<a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#cite" style="font: 1em / 1 anchorjs-icons; padding-left: 0.375em;"></a></h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">×</span>
+</button>
+</div>
+<div class="modal-body">
+<pre><code class="tex hljs latex"></code></pre>
+</div>
+<div class="modal-footer">
+<a class="btn btn-outline-primary my-1 js-copy-cite" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" target="_blank">
+<i class="fas fa-copy"></i> Copy
+</a>
+<a class="btn btn-outline-primary my-1 js-download-cite" href="https://rafed.github.io/courses/distributed-systems/lab/microservice-linkedin/#" target="_blank">
+<i class="fas fa-download"></i> Download
+</a>
+<div id="modal-error"></div>
+</div>
+</div>
+</div>
+</div>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/instantpage.min.js" integrity="sha512-1+qUtKoh9XZW7j+6LhRMAyOrgSQKenQ4mluTR+cvxXjP1Z54RxZuzstR/H9kgPXQsVB8IW7DMDFUJpzLjvhGSQ==" crossorigin="anonymous"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/mermaid.min.js" integrity="sha512-as1BF4+iHZ3BVO6LLDQ7zrbvTXM+c/1iZ1qII/c3c4L8Rn5tHLpFUtpaEtBNS92f+xGsCzsD7b62XP3XYap6oA==" crossorigin="anonymous" title="mermaid"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/r.min.js" crossorigin="anonymous"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/latex.min.js" crossorigin="anonymous"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+<script>anchors.add()</script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/bootstrap.bundle.min.6aed84840afc03ab4d5750157f69c120.js"></script>
+<script src="./LinkedIn backend_ From monolith to microservices _ Rafed M. Yasir_files/wowchemy.min.99ddacf76b31e04b589f8ff7e550cbb8.js"></script>
+
+</body></html>
