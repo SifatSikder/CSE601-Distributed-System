@@ -1,0 +1,40 @@
+version: '3'
+services:
+  userservice:
+    build: ./UserService
+    env_file:
+      - ./UserService/.env
+    ports:
+      - 9000:5000
+    volumes:
+      - /app/node_modules
+      - ./UserService:/app
+    depends_on:
+      - userdb
+
+  userdb:
+    image: mongo
+    restart: always
+    container_name: mongod
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sifat
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+    volumes:
+      - userdb:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongod
+      ME_CONFIG_MONGODB_ADMINUSERNAME: sifat
+      ME_CONFIG_BASICAUTH_USERNAME: sifat
+      ME_CONFIG_BASICAUTH_PASSWORD: 1234
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 1234
+    depends_on:
+      - userdb
+
+volumes:
+  userdb:
