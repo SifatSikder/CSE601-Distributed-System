@@ -1,0 +1,52 @@
+
+
+create and assign relation
+
+
+CREATE (J:User{name:"Sifat"})- [r:isAFanOf]->(n:User{name:"Shah Rukh Khan"})
+CREATE (J:User{name:"Rifat"})- [r:isAFanOf]->(n:User{name:"Shah Rukh Khan"})
+
+
+match (sifat {name:"Sifat"}) - [rel:]
+CREATE (J:User{name:"Rifat"})- [r:isAFanOf]->(n:User{name:"Shah Rukh Khan"})
+
+
+create constraint on (user:User) assert user.name is unique
+
+
+
+
+
+only create then update
+
+CREATE (ironman:User{name:"tony stark"})
+CREATE (thor:User{name:"Thor"})
+match (thor:User {name:"Thor"}), (ironman:User {name:"tony stark"})
+create (thor) - [:isFriendOf] -> (ironman)
+
+
+
+delete a node: 
+
+match (u {name:"Sifat"})
+detach delete u
+
+
+delete a node by id:
+
+match (srk:User)
+where id(srk) = 5
+detach delete srk
+
+
+
+
+
+
+
+
+
+
+
+
+
