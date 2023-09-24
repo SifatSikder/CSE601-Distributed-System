@@ -1,21 +1,29 @@
 version: '3'
 services:
-  userservice:
-    build: ./UserService
-    env_file:
-      - ./UserService/.env
-    ports:
-      - 9000:5000
+
+  client:
+    build: ./client
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - /app/node_modules
-      - ./UserService:/app
+      - ./client:/app
+
+  userservice:
+    build: ./server/UserService
+    env_file:
+      - ./server/UserService/.env
+    volumes:
+      - /app/node_modules
+      - ./server/UserService:/app
     depends_on:
       - userdb
 
   userdb:
     image: mongo
     restart: always
-    container_name: mongod
+    container_name: userdb
     environment:
       MONGO_INITDB_ROOT_USERNAME: sifat
       MONGO_INITDB_ROOT_PASSWORD: 1234
@@ -28,13 +36,22 @@ services:
     ports:
       - 8081:8081
     environment:
-      ME_CONFIG_MONGODB_SERVER: mongod
+      ME_CONFIG_MONGODB_SERVER: userdb
       ME_CONFIG_MONGODB_ADMINUSERNAME: sifat
       ME_CONFIG_BASICAUTH_USERNAME: sifat
       ME_CONFIG_BASICAUTH_PASSWORD: 1234
       ME_CONFIG_MONGODB_ADMINPASSWORD: 1234
     depends_on:
       - userdb
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - userservice
+      - client
 
 volumes:
   userdb:
