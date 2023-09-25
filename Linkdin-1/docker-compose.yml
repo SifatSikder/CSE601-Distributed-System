@@ -21,7 +21,7 @@ services:
       - userdb
 
   userdb:
-    image: mongo
+    image: mongo:4.4.6
     restart: always
     container_name: userdb
     environment:

@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    BASE_URL: 'http://localhost/api'
+    USER_URL: 'http://localhost/api/user'
 };

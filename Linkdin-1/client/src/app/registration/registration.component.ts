@@ -12,15 +12,15 @@ import { environment } from '../../environments/environment';
 export class RegistrationComponent {
 
   user = new User();
-  base_url = environment.BASE_URL;
+  user_url = environment.USER_URL;
 
   constructor(private http: HttpClient, private router: Router) { }
 
   onSubmit() {
     console.log(this.user);
-    console.log(this.base_url);
+    console.log(this.user_url);
 
-    this.http.post<any>(`${this.base_url}/user/register`, this.user)
+    this.http.post<any>(`${this.user_url}/register`, this.user)
       .subscribe(res => {
         if (res.success) {
           this.router.navigate(['/login']);
