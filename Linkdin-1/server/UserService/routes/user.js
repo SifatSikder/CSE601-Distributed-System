@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken')
 const User = require("../models/userModel");
-
 require('dotenv').config()
 
 router.post("/register", async (req, res) => {
@@ -51,30 +50,5 @@ router.post("/login", async (req, res) => {
         })
     }
 });
-
-function authenticateToken(req, res, next) {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-
-        var token = req.headers.authorization.split(' ')[1];
-
-        if (token == 'null') {
-            return res.json({ success: false, message: 'No Token Provided' });
-        }
-        jwt.verify(token, process.env.PASSWORD_HASH_SECRET_KEY, (err, userInfo) => {
-            if (err) {
-                return res.status(403).json({ success: false, message: 'Invalid Token' });
-            }
-            else {
-                req.user = userInfo;
-                next();
-            }
-        })
-    }
-    else {
-        return res.json({ success: false, message: 'Access denied' });
-    }
-
-}
-
 
 module.exports = router;

@@ -3,8 +3,8 @@ const express = require("express");
 const app = express();
 
 //port setup
-require('dotenv').config()
-const port = process.env.PORT || 8080;
+//port setup
+const port = process.env.PORT || 8888;
 
 //body parser configutation
 const bodyParser = require('body-parser');

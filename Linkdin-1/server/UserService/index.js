@@ -14,17 +14,13 @@ app.use(bodyParser.json());
 const cors = require("cors");
 app.use(cors())
 
-
-const mongoose = require("mongoose");
-
 //database connection
 const connectDB = require('./config/db')
 connectDB();
 
-
+//Routes configuration
 const userRoutes = require('./routes/user');
 app.use('/api/user', userRoutes);
-
 
 
 //server listens here
