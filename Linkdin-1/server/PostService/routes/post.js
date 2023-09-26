@@ -54,7 +54,8 @@ async function getSingleUser(userID) {
 
 }
 
-router.get("/post", authenticateToken, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
+
 
     //fetching posts
     var posts = await Post.find({});
@@ -90,7 +91,7 @@ router.get("/post", authenticateToken, async (req, res) => {
 
 });
 
-router.post('/:userID/post', /*upload.single('postImage'),*/ async (req, res) => {
+router.post('/:userID', /*upload.single('postImage'),*/ async (req, res) => {
 
     const file = req.file;
     const postText = req.body.postText;
