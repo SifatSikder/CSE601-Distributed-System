@@ -51,4 +51,15 @@ router.post("/login", async (req, res) => {
     }
 });
 
+
+
+router.get("/:userID/single", async (req, res) => {
+    let userID = req.params.userID
+    const user = await User.findById(userID)
+    return res.json({ user: user })
+});
+
+
+
+
 module.exports = router;

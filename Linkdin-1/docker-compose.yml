@@ -77,7 +77,7 @@ services:
     image: mongo-express
     restart: always
     ports:
-      - 8080:8080
+      - 8082:8081
     environment:
       ME_CONFIG_MONGODB_SERVER: postdb
       ME_CONFIG_MONGODB_ADMINUSERNAME: sifat
@@ -87,6 +87,29 @@ services:
     depends_on:
       - postdb
 
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodb:/data
+    environment:
+      MINIO_ROOT_USER: sifat
+      MINIO_ROOT_PASSWORD: '01711813256'
+    command: server --console-address ":9001" /data
+
+  minioservice:
+    build: ./server/MinioService
+    env_file:
+      - ./server/MinioService/.env
+    volumes:
+      - /app/node_modules
+      - ./server/MinioService:/app
+    depends_on:
+      - minio
+
 volumes:
   userdb:
   postdb:
+  miniodb:

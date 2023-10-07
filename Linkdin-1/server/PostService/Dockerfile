@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:16
 
 WORKDIR /app
 
@@ -11,5 +11,6 @@ COPY ./ .
 ENV PORT 8888
 
 EXPOSE ${PORT}
+
 
 CMD [ "npm", "run","dev" ]
