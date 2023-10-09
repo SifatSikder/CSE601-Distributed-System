@@ -41,8 +41,6 @@ async function notificationCleaner() {
     })
 }
 
-
 setInterval(notificationCleaner, 5000);
-
 
 module.exports = router;
