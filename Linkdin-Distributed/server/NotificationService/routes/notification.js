@@ -23,6 +23,7 @@ router.post("/", (req, res) => {
 router.get("/:userID", async (req, res) => {
     var notifications = await Notification.find({ expiredStatus: "alive" });
     notifications = notifications.filter(notification => notification.receiverID == req.params.userID)
+    console.log(notifications);
     return res.json({ success: true, notifications: notifications })
 });
 
