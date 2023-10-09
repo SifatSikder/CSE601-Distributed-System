@@ -27,4 +27,22 @@ router.get("/:userID", async (req, res) => {
 });
 
 
+router.get("/:notificationID/singleNotification", async (req, res) => {
+    var notification = await Notification.findById(req.params.notificationID);
+    return res.json({ success: true, notification: notification })
+});
+
+async function notificationCleaner() {
+
+    var notifications = await Notification.find({});
+    notifications.forEach(notification => {
+        notification.expiredStatus = 'expired';
+        notification.save();
+    })
+}
+
+
+setInterval(notificationCleaner, 5000);
+
+
 module.exports = router;

@@ -5,7 +5,7 @@ import { Post } from '../model/post';
 import { Notification } from '../model/notification';
 import { User } from '../model/user';
 import { environment } from 'src/environments/environment';
-// import { DashboardPostConnectorService } from '../dashboard-post-connector.service';
+import { DashboardPostConnectorService } from '../services/dashboard-post-connector.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, public postConnector: DashboardPostConnectorService) { }
 
   post: Post = new Post('', '');
   res: any;
@@ -56,9 +56,6 @@ export class DashboardComponent implements OnInit {
 
   onSubmit() {
 
-    console.log(this.user);
-
-
     const formData = new FormData();
     formData.append('postText', this.post.postText);
     formData.append('postImage', this.post.postImageUrl);
@@ -68,8 +65,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onNotificationClick(notificationID: string) {
-    // this.postConnector.storeNotificationID(notificationID);
-    this.router.navigate(['/post'])
+    this.postConnector.storeNotificationID(notificationID);
+    this.router.navigate(['/singlePost'])
   }
-
 }

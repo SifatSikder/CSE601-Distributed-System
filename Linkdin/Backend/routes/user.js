@@ -220,21 +220,16 @@ router.post('/:userID/upload-post', upload.single('postImage'), async (req, res)
 router.get('/:notificationID/post', async (req, res) => {
     const notification = await Notification.findById(req.params.notificationID);
     const post = await Post.findById(notification.postID);
-    var postObject = {};
     var postOwner = await User.findById(post.userID);
+
+    var postObject = {};
     postObject['postText'] = post.postText;
     postObject['postImageUrl'] = post.postImageUrl;
     postObject['postOwnerName'] = postOwner.username;
     postObject['postOwnerEmail'] = postOwner.email;
-
-    console.log('hit khaise');
-
     return res.json({ success: true, post: postObject });
-
 })
 
-
-const mongodb = require('mongodb');
 
 async function notificationCleaner() {
 

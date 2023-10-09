@@ -33,20 +33,6 @@ function authenticateToken(req, res, next) {
 
 }
 
-async function getUserList() {
-
-
-
-    var fetch = require('node-fetch');
-
-    const response = await fetch(`${user_url}/all`);
-    const data = await response.json();
-
-    console.log(data);
-
-}
-
-
 async function getSingleUser(userID) {
 
     var fetch = require('node-fetch');
@@ -56,21 +42,17 @@ async function getSingleUser(userID) {
 
 }
 
-
 async function getImageUrl(fileMetaData, fileData, userID) {
     var fetch = require('node-fetch');
-    console.log(fileData);
     const response = await fetch(`${minio_url}/${userID}/`, { method: 'POST', body: JSON.stringify({ fileMetaData: fileMetaData, fileData: fileData }), headers: { 'Content-Type': 'application/json' } });
     const data = await response.json();
     return data.postImageUrl;
 }
 
-
 async function createNotification(receiverID, postOwnerName, postID) {
     var fetch = require('node-fetch');
     await fetch(`${notification_url}`, { method: 'POST', body: JSON.stringify({ receiverID: receiverID, postOwnerName: postOwnerName, postID: postID }), headers: { 'Content-Type': 'application/json' } });
 }
-
 
 async function getNotifications(userID) {
     var fetch = require('node-fetch');
@@ -79,6 +61,15 @@ async function getNotifications(userID) {
 
     return data.notifications;
 }
+
+async function getSingleNotification(notificationID) {
+    var fetch = require('node-fetch');
+    const response = await fetch(`${notification_url}/${notificationID}/singleNotification`, { method: 'GET' });
+    const data = await response.json();
+    return data.notification;
+}
+
+
 
 
 
@@ -194,6 +185,21 @@ router.post('/:userID', upload.single('postImage'), async (req, res) => {
         }
         return res.json({ success: true, message: 'Post Shared' });
     }
+})
+
+
+router.get('/:notificationID/singlePost', async (req, res) => {
+    const notification = await getSingleNotification(req.params.notificationID);
+
+    const post = await Post.findById(notification.postID);
+    var postOwner = await getSingleUser(post.userID);
+
+    var postObject = {};
+    postObject['postText'] = post.postText;
+    postObject['postImageUrl'] = post.postImageUrl;
+    postObject['postOwnerName'] = postOwner.username;
+    postObject['postOwnerEmail'] = postOwner.email;
+    return res.json({ success: true, post: postObject });
 })
 
 module.exports = router;
