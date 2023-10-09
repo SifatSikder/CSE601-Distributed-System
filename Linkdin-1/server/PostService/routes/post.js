@@ -5,6 +5,7 @@ const Post = require("../models/postModel");
 require('dotenv').config()
 var user_url = process.env.USER_URL;
 var minio_url = process.env.MINIO_URL;
+var notification_url = process.env.NOTIFICATION_URL;
 const multer = require('multer');
 const fs = require('fs');
 
@@ -64,6 +65,23 @@ async function getImageUrl(fileMetaData, fileData, userID) {
     return data.postImageUrl;
 }
 
+
+async function createNotification(receiverID, postOwnerName, postID) {
+    var fetch = require('node-fetch');
+    await fetch(`${notification_url}`, { method: 'POST', body: JSON.stringify({ receiverID: receiverID, postOwnerName: postOwnerName, postID: postID }), headers: { 'Content-Type': 'application/json' } });
+}
+
+
+async function getNotifications(userID) {
+    var fetch = require('node-fetch');
+    const response = await fetch(`${notification_url}/${userID}`, { method: 'GET' });
+    const data = await response.json();
+
+    return data.notifications;
+}
+
+
+
 // File upload settings and multer configuration
 const PATH = './imageStore/';
 let storage = multer.diskStorage({
@@ -104,14 +122,30 @@ router.get("/", authenticateToken, async (req, res) => {
         postObject['postOwnerEmail'] = postOwner.email;
         postList.push(postObject);
 
+
+        //Post not seen by the user==New post (Need to send a notification)
+        if (post.viewers.find(element => element._id == req.user.id) == undefined) {
+
+
+
+            await createNotification(req.user.id, postOwner.username, post._id);
+
+            //Once notification is send via the database the current user must be
+            //put into the viewers array
+            post.viewers.push(req.user.id);
+            post.save();
+        }
     })
 
     //fetching user information
     var user = await getSingleUser(req.user.id);
-    console.log(user);
+
+
+    //Filtering notification that should be access by the current user
+    var notifications = await getNotifications(req.user.id)
 
     //Sending Response
-    return res.json({ success: true, message: 'Welcome to dashboard', user: user, postList: postList });
+    return res.json({ success: true, message: 'Welcome to dashboard', user: user, postList: postList, notifications: notifications });
 
 });
 

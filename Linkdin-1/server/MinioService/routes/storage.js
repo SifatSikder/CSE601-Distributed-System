@@ -19,7 +19,7 @@ function storeImage(fileMetaData, fileData) {
     const objectName = fileMetaData.filename;
     const metadata = { 'Content-type': 'image', };
     minioClient.putObject(bucketName, objectName, fileData, metadata);
-    return `http://minio:9000/${bucketName}/${objectName}`
+    return `http://localhost:9000/${bucketName}/${objectName}`
 }
 
 

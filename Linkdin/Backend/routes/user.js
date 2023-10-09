@@ -134,10 +134,9 @@ router.get("/dashboard", authenticateToken, async (req, res) => {
 
     //Filtering notification that should be access by the current user
     var notifications = await Notification.find({ expiredStatus: "alive" });
-    console.log(notifications);
     notifications = notifications.filter(notification => notification.receiverID == req.user.id)
 
-    console.log(notifications);
+
 
 
     //Sending Response
@@ -166,7 +165,7 @@ var minioClient = new Minio.Client({
     secretKey: process.env.MINIO_SECRET_KEY
 });
 var bucketName = process.env.BUCKETNAME
-var region = process.env.REGION
+
 
 router.post('/:userID/upload-post', upload.single('postImage'), async (req, res) => {
 
@@ -193,7 +192,7 @@ router.post('/:userID/upload-post', upload.single('postImage'), async (req, res)
         const fileData = fs.readFileSync(file.path);
         const objectName = file.filename;
         const metadata = { 'Content-type': 'image', };
-        await minioClient.putObject(bucketName, objectName, fileData, metadata);
+        minioClient.putObject(bucketName, objectName, fileData, metadata);
 
         const postImageUrl = `http://localhost:9000/${bucketName}/${objectName}`
 
