@@ -167,7 +167,6 @@ router.post('/:userID', upload.single('postImage'), async (req, res) => {
         const fileData = fs.readFileSync(file.path);
 
         let postImageUrl = await getImageUrl(fileMetaData, fileData, userID);
-
         if (postText == '') {
             const post = new Post({
                 userID: user._id,
