@@ -3,8 +3,6 @@ services:
 
   nginx:
     image: sifat1221/linkedin-client
-    volumes:
-      - ./nginx.default.conf:/etc/nginx/conf.d/default.conf
     restart: always
     ports:
       - "80:80"
@@ -16,11 +14,15 @@ services:
 
   userservice:
     image: sifat1221/linkedin-backend-userservice
-    env_file:
-      - ./server/UserService/.env
+    environment:
+      - PORT=5000
+      - MONGO_USERNAME=sifat
+      - MONGO_PASSWORD=1234
+      - MONGO_IP=userdb
+      - MONGO_DATABASE_NAME=linkdinUsers
+      - PASSWORD_HASH_SECRET_KEY=369b4d397587030ad10c67d03faa437f47c613c4373bac9065b37cf06eb7c3b926f8f7d5e67c93f47485fb75a771e515c171c240d3c202adc82ee18ffc7a1c11
     volumes:
       - /app/node_modules
-      - ./server/UserService:/app
     depends_on:
       - userdb
 
@@ -50,11 +52,14 @@ services:
 
   notificationservice:
     image: sifat1221/linkedin-backend-notificationservice:latest
-    env_file:
-      - ./server/NotificationService/.env
+    environment:
+      - PORT=8000
+      - MONGO_USERNAME=sifat
+      - MONGO_PASSWORD=1234
+      - MONGO_IP=notificationdb
+      - MONGO_DATABASE_NAME=linkdinNotifications
     volumes:
       - /app/node_modules
-      - ./server/NotificationService:/app
     depends_on:
       - notificationdb
 
@@ -84,11 +89,18 @@ services:
 
   postservice:
     image: sifat1221/linkedin-backend-postservice
-    env_file:
-      - ./server/PostService/.env
+    environment:
+      - USER_URL=http://userservice:5000/api/user
+      - NOTIFICATION_URL=http://notificationservice:8000/api/notification
+      - MINIO_URL=http://minioservice:7000/api/objectStorage
+      - PORT=6000
+      - MONGO_USERNAME=sifat
+      - MONGO_PASSWORD=1234
+      - MONGO_IP=postdb
+      - MONGO_DATABASE_NAME=linkdinPosts
+      - PASSWORD_HASH_SECRET_KEY=369b4d397587030ad10c67d03faa437f47c613c4373bac9065b37cf06eb7c3b926f8f7d5e67c93f47485fb75a771e515c171c240d3c202adc82ee18ffc7a1c11
     volumes:
       - /app/node_modules
-      - ./server/PostService:/app
     depends_on:
       - postdb
 
@@ -130,11 +142,16 @@ services:
 
   minioservice:
     image: sifat1221/linkedin-backend-minioservice
-    env_file:
-      - ./server/MinioService/.env
+    environment:
+      - PORT =7000
+      - ENDPOINT=minio
+      - ACCESSKEY=sifat
+      - MINIO_SECRET_KEY=01711813256
+      - BUCKETNAME= linkdin-post-images
+      - REGION= us-east-1
+      - MINIO_BASE_URL= http://localhost:9000
     volumes:
       - /app/node_modules
-      - ./server/MinioService:/app
     depends_on:
       - minio
 
